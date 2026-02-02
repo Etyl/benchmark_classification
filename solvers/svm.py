@@ -21,7 +21,7 @@ class Solver(BaseSolver):
     # List of packages needed to run the solver. See the corresponding
     # section in objective.py. Here `scikit-learn` is already present
     # so no need to add it again.
-    requirements = []
+    sampling_strategy = "run_once"
 
     def set_objective(self, X_train, y_train):
         # Define the information received by each solver from the objective.
@@ -49,4 +49,4 @@ class Solver(BaseSolver):
         # keyword arguments for `Objective.evaluate_result`.
         # This defines the benchmark's API for solvers' results.
         # It is customizable for each benchmark.
-        return dict(model=self.clf)
+        return dict(model=self.clf.predict)

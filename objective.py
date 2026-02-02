@@ -2,6 +2,7 @@ from benchopt import BaseObjective
 
 from sklearn.model_selection import KFold
 from sklearn.dummy import DummyClassifier
+from sklearn.metrics import accuracy_score
 
 
 # The benchmark objective must be named `Objective` and
@@ -9,7 +10,7 @@ from sklearn.dummy import DummyClassifier
 class Objective(BaseObjective):
 
     # Name to select the objective in the CLI and to display the results.
-    name = "Template benchmark"
+    name = "Classification benchmark"
 
     # URL of the main repo for this benchmark.
     url = "https://github.com/benchopt/#BENCHMARK"
@@ -35,10 +36,7 @@ class Objective(BaseObjective):
     # Bump it up if the benchmark depends on a new feature of benchopt.
     min_benchopt_version = "1.8"
 
-    # Disable performance curves - each solver runs once to completion
-    # See https://benchopt.github.io/stable/user_guide/performance_curves.html
-    # for more details.
-    sampling_strategy = "run_once"
+    key_to_monitor = "accuracy_test"
 
     def set_data(self, X, y):
         # The keyword arguments of this function are the keys of the dictionary
@@ -66,8 +64,8 @@ class Objective(BaseObjective):
         #
         # Here, the solver returns a trained model,
         # with which we can call ``score`` to get the accurcay.
-        accuracy_train = model.score(self.X_train, self.y_train)
-        accuracy_test = model.score(self.X_test, self.y_test)
+        accuracy_train = accuracy_score(self.y_train, model(self.X_train))
+        accuracy_test = accuracy_score(self.y_test, model(self.X_test))
 
         # This method can return many metrics in a dictionary.
         return dict(
@@ -80,7 +78,7 @@ class Objective(BaseObjective):
         # with `self.evaluate_result`. This is mainly for testing purposes.
         clf = DummyClassifier()
         clf.fit(self.X_train, self.y_train)
-        return dict(model=clf)
+        return dict(model=clf.predict)
 
     def get_objective(self):
         # Define the information to pass to each solver to run the benchmark.
