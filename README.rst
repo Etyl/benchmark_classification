@@ -7,22 +7,45 @@ Benchopt is a package to simplify and make more transparent and
 reproducible comparisons of ML methods on multiple datasets.
 This benchmark is dedicated to methods for **describe your problem**.
 
-Install
---------
+Install with conda
+------------------
 
-This benchmark can be run using the following commands:
-
-.. code-block::
-
-   $ pip install -U benchopt
-
-Apart from the problem, options can be passed to ``benchopt run``, to restrict the benchmarks to some solvers or datasets, e.g.:
+Create a conda environment:
 
 .. code-block::
 
+   $ conda create -n benchopt-clf python=3.11 -y
+   $ conda activate benchopt-clf
+
+Install benchopt and the benchmark dependencies:
+
+.. code-block::
+
+   $ python -m pip install benchopt
+   $ benchopt install .
+
+
+Install without conda
+---------------------
+
+Create a virtual environment, and install the requirements:
+
+.. code-block::
+
+   $ python3 -m venv benchopt-clf
+   $ source benchopt-clf/bin/activate
+   $ python -m pip install --upgrade pip
+   $ python -m pip install -r requirements.txt
+
+
+
+Run the benchmark
+-----------------
+
+.. code-block::
+
+   $ benchopt run .
 
 
 Use ``benchopt run -h`` for more details about these options, or visit https://benchopt.github.io/api.html.
 
-.. |Python 3.6+| image:: https://img.shields.io/badge/python-3.6%2B-blue
-   :target: https://www.python.org/downloads/release/python-360/
