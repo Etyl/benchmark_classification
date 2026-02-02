@@ -1,14 +1,12 @@
 
-My Benchopt Benchmark
-=====================
+Example Classficiation Benchmark
+================================
 |Build Status| |Python 3.6+|
 
-Benchopt is a package to simplify and make more transparent and
-reproducible comparisons of ML methods on multiple datasets.
-This benchmark is dedicated to methods for **describe your problem**.
+Installation
+------------
 
-Install with conda
-------------------
+**Install with conda**
 
 Create a conda environment:
 
@@ -25,8 +23,7 @@ Install benchopt and the benchmark dependencies:
    $ benchopt install .
 
 
-Install without conda
----------------------
+**Install without conda**
 
 Create a virtual environment, and install the requirements:
 
@@ -38,14 +35,12 @@ Create a virtual environment, and install the requirements:
    $ python -m pip install -r requirements.txt
 
 
-
 Run the benchmark
 -----------------
 
 .. code-block::
 
    $ benchopt run .
-
 
 Use ``benchopt run -h`` for more details about these options, or visit https://benchopt.github.io/api.html.
 
