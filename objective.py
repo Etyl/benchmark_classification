@@ -18,7 +18,7 @@ class Objective(BaseObjective):
     # List of parameters for the objective. The benchmark will consider
     # the cross product for each key in the dictionary.
     # All parameters 'p' defined here are available as 'self.p'.
-    # This means the OLS objective will have a parameter `self.whiten_y`.
+    # This means the objective will have a parameter `self.random_state`.
     parameters = {
         'random_state': [32],
     }
@@ -61,7 +61,7 @@ class Objective(BaseObjective):
         # customized for each benchmark.
         #
         # Here, the solver returns a trained model,
-        # with which we can call ``score`` to get the accurcay.
+        # with which we can make a prediction, and evaluate it.
         accuracy_train = accuracy_score(self.y_train, model(self.X_train))
         accuracy_test = accuracy_score(self.y_test, model(self.X_test))
 

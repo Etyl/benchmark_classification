@@ -24,8 +24,7 @@ class Solver(BaseSolver):
     }
 
     # List of packages needed to run the solver. See the corresponding
-    # section in objective.py. Here `scikit-learn` is already present
-    # so no need to add it again.
+    # section in objective.py.
     requirements = ['pytorch:pytorch']
 
     # TODO: change with maxmimizing criterion
@@ -55,11 +54,8 @@ class Solver(BaseSolver):
         )
 
     def run(self, n_iter):
-        """
-        Run the solver.
-        """
         # This is the method that is called to fit the model.
-        optim = torch.optim.Adam(self.clf.parameters(), lr=self.lr)
+        optim = torch.optim.SGD(self.clf.parameters(), lr=self.lr)
         loss_fn = nn.CrossEntropyLoss()
 
         for _ in range(n_iter):
