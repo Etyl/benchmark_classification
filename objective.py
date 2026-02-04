@@ -13,7 +13,7 @@ class Objective(BaseObjective):
     name = "Classification benchmark"
 
     # URL of the main repo for this benchmark.
-    url = "https://github.com/benchopt/#BENCHMARK"
+    url = "https://github.com/Etyl/#BENCHMARK"
 
     # List of parameters for the objective. The benchmark will consider
     # the cross product for each key in the dictionary.
@@ -35,8 +35,6 @@ class Objective(BaseObjective):
     # Minimal version of benchopt required to run this benchmark.
     # Bump it up if the benchmark depends on a new feature of benchopt.
     min_benchopt_version = "1.8"
-
-    key_to_monitor = "accuracy_test"
 
     def set_data(self, X, y):
         # The keyword arguments of this function are the keys of the dictionary
