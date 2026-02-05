@@ -1,4 +1,17 @@
 
+Example Classficiation Benchmark
+================================
+|Build Status| |Python 3.6+|
+
+Installation
+------------
+
+**Install with conda**
+
+Create a conda environment:
+
+.. code-block::
+
    $ conda create -n benchopt-clf python=3.11 -y
    $ conda activate benchopt-clf
 
