@@ -3,10 +3,10 @@ from benchopt import BasePlot
 
 class Plot(BasePlot):
     name = "Solver Params"
-    type = "bar_chart" # Or "scatter", "boxplot", "table"
+    type = "bar_chart"  # Or "scatter", "boxplot", "table"
     options = {
-        "dataset": ..., # Automatic options from DataFrame columns
-        "solver": ["SVM", "torch-logreg"], # custom options
+        "dataset": ...,  # Automatic options from DataFrame columns
+        "solver": ["SVM", "torch-logreg"],  # custom options
         "objective": ...,
         "objective_column": ...,
     }
@@ -23,7 +23,7 @@ class Plot(BasePlot):
             if solver not in solver_name:
                 continue
             df_filtered = df_filtered.select_dtypes(include=['number'])
-            
+
             if objective_column not in df_filtered:
                 continue
 
@@ -35,7 +35,8 @@ class Plot(BasePlot):
 
             # For a bar chart, each plot is a dictionary with keys:
             # 'y', 'text', 'label', 'color'
-            # For other plot types, the structure may differ (see documentation).
+            # For other plot types, the structure may differ
+            # (see documentation).
             plots.append({
                 "y": y,
                 "text": "",
