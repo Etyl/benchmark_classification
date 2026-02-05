@@ -32,7 +32,7 @@ class Solver(BaseSolver):
     #     strategy="iteration", eps=1e-4, patience=5,
     #     key_to_monitor="accuracy_test"
     # )
-    stopping_criterion = NoCriterion()
+    stopping_criterion = NoCriterion(key_to_monitor="accuracy_test")
 
     def set_objective(self, X_train, y_train):
         # Define the information received by each solver from the objective.
