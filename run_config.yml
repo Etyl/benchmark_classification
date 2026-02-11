@@ -1,0 +1,16 @@
+dataset:
+  simulated:
+      n_samples, n_features:
+        - [1000, 100]
+        - [5000, 10]
+      random_state: [27]
+
+solver:
+  svm:
+    kernel: ["linear"]
+  torch-logreg:
+    lr: [0.01]
+    batch_size: [64, 256]
+
+n_repetitions: 3
+timeout: 30
