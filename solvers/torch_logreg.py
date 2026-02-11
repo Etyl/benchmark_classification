@@ -1,10 +1,12 @@
 from benchopt import BaseSolver
 from benchopt.stopping_criterion import (
-    NoCriterion
+    SufficientProgressCriterion
 )
-
 import torch
 import torch.nn as nn
+
+
+MAX_EPOCHS = 100
 
 
 # The benchmark solvers must be named `Solver` and
@@ -19,7 +21,7 @@ class Solver(BaseSolver):
     # All parameters 'p' defined here are available as 'self.p'
     # and are set to one value of the list.
     parameters = {
-        'lr': [0.001],
+        'lr': [0.01],
         'batch_size': [64],
     }
 
@@ -27,12 +29,10 @@ class Solver(BaseSolver):
     # section in objective.py.
     requirements = ['pytorch:pytorch']
 
-    # TODO: change with maxmimizing criterion
-    # stopping_criterion = SufficientProgressCriterion(
-    #     strategy="iteration", eps=1e-4, patience=5,
-    #     key_to_monitor="accuracy_test"
-    # )
-    stopping_criterion = NoCriterion(key_to_monitor="accuracy_test")
+    stopping_criterion = SufficientProgressCriterion(
+        strategy="callback", eps=1e-3, patience=3,
+        key_to_monitor="accuracy_test", minimize=False
+    )
 
     def set_objective(self, X_train, y_train):
         # Define the information received by each solver from the objective.
@@ -40,10 +40,7 @@ class Solver(BaseSolver):
         # `Objective.get_objective`. This defines the benchmark's API for
         # passing the objective to the solver.
         # It is customizable for each benchmark.
-        self.clf = nn.Sequential(
-            nn.Linear(X_train.shape[1], 2),
-            nn.Softmax(dim=1)
-        )
+        self.clf = nn.Linear(X_train.shape[1], 2)
         self.dataloader = torch.utils.data.DataLoader(
             torch.utils.data.TensorDataset(
                 torch.tensor(X_train, dtype=torch.float32),
@@ -53,18 +50,21 @@ class Solver(BaseSolver):
             shuffle=True
         )
 
-    def run(self, n_iter):
+    def run(self, callback):
         # This is the method that is called to fit the model.
         optim = torch.optim.SGD(self.clf.parameters(), lr=self.lr)
         loss_fn = nn.CrossEntropyLoss()
 
-        for _ in range(n_iter):
+        for _ in range(MAX_EPOCHS):
             for X_batch, y_batch in self.dataloader:
                 optim.zero_grad()
                 y_pred = self.clf(X_batch)
                 loss = loss_fn(y_pred, y_batch)
                 loss.backward()
                 optim.step()
+
+                if not callback():
+                    return
 
     def get_result(self):
         # Returns the model after fitting.
