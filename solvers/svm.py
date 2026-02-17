@@ -51,4 +51,4 @@ class Solver(BaseSolver):
         # keyword arguments for `Objective.evaluate_result`.
         # This defines the benchmark's API for solvers' results.
         # It is customizable for each benchmark.
-        return dict(model=self.clf.predict)
+        return dict(predict=self.clf.predict)

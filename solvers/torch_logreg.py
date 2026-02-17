@@ -6,9 +6,6 @@ import torch
 import torch.nn as nn
 
 
-MAX_EPOCHS = 100
-
-
 # The benchmark solvers must be named `Solver` and
 # inherit from `BaseSolver` for `benchopt` to work properly.
 class Solver(BaseSolver):
@@ -50,12 +47,18 @@ class Solver(BaseSolver):
             shuffle=True
         )
 
+    def get_next(self, stop_val):
+        # This controls when the solver is evaluated, which is used by
+        # the stopping criterion.
+        return stop_val + 50
+
     def run(self, callback):
         # This is the method that is called to fit the model.
         optim = torch.optim.SGD(self.clf.parameters(), lr=self.lr)
         loss_fn = nn.CrossEntropyLoss()
 
-        for _ in range(MAX_EPOCHS):
+        max_epochs = 100
+        for _ in range(max_epochs):
             for X_batch, y_batch in self.dataloader:
                 optim.zero_grad()
                 y_pred = self.clf(X_batch)
@@ -78,4 +81,4 @@ class Solver(BaseSolver):
                 y_pred = self.clf(X_tensor)
             return torch.argmax(y_pred, axis=1).numpy()
 
-        return dict(model=predict)
+        return dict(predict=predict)

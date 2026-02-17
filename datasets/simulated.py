@@ -16,8 +16,7 @@ class Dataset(BaseDataset):
         'n_samples, n_features': [
             (1000, 100),
             (5000, 10),
-        ],
-        'random_state': [27],
+        ]
     }
 
     # List of packages needed to run the dataset. See the corresponding
@@ -37,7 +36,7 @@ class Dataset(BaseDataset):
         X, y = make_classification(
             n_samples=self.n_samples, n_features=self.n_features,
             n_informative=1, n_redundant=0, n_clusters_per_class=1,
-            random_state=self.random_state
+            random_state=self.get_seed()
         )
 
         # The dictionary defines the keyword arguments for `Objective.set_data`

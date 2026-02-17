@@ -10,18 +10,10 @@ from sklearn.metrics import accuracy_score
 class Objective(BaseObjective):
 
     # Name to select the objective in the CLI and to display the results.
-    name = "Classification benchmark"
+    name = "Classification"
 
     # URL of the main repo for this benchmark.
-    url = "https://github.com/Etyl/#BENCHMARK"
-
-    # List of parameters for the objective. The benchmark will consider
-    # the cross product for each key in the dictionary.
-    # All parameters 'p' defined here are available as 'self.p'.
-    # This means the objective will have a parameter `self.random_state`.
-    parameters = {
-        'random_state': [32],
-    }
+    url = "https://github.com/Etyl/benchmark_classification"
 
     # List of packages needed to run the benchmark.
     # They are installed with conda; to use pip, use 'pip:packagename'. To
@@ -46,7 +38,7 @@ class Objective(BaseObjective):
         # This will be automatically used in `self.get_split` to split
         # the arrays provided.
         self.cv = KFold(
-            n_splits=5, shuffle=True, random_state=self.random_state
+            n_splits=5, shuffle=True, random_state=self.get_seed()
         )
 
         # If the cross-validation requires some metadata, it can be
@@ -54,16 +46,16 @@ class Objective(BaseObjective):
         # to `self.cv.split` and `self.cv.get_n_splits`.
         self.cv_metadata = {}
 
-    def evaluate_result(self, model):
+    def evaluate_result(self, predict):
         # The keyword arguments of this function are the keys of the
         # dictionary returned by `Solver.get_result`. This defines the
         # benchmark's API to pass the solvers' result. This can be
         # customized for each benchmark.
         #
-        # Here, the solver returns a trained model,
-        # with which we can make a prediction, and evaluate it.
-        accuracy_train = accuracy_score(self.y_train, model(self.X_train))
-        accuracy_test = accuracy_score(self.y_test, model(self.X_test))
+        # Here, the solver returns a prediction function, with
+        # which we can make a prediction, and evaluate it.
+        accuracy_train = accuracy_score(self.y_train, predict(self.X_train))
+        accuracy_test = accuracy_score(self.y_test, predict(self.X_test))
 
         # This method can return many metrics in a dictionary.
         return dict(
@@ -76,7 +68,7 @@ class Objective(BaseObjective):
         # with `self.evaluate_result`. This is mainly for testing purposes.
         clf = DummyClassifier()
         clf.fit(self.X_train, self.y_train)
-        return dict(model=clf.predict)
+        return dict(predict=clf.predict)
 
     def get_objective(self):
         # Define the information to pass to each solver to run the benchmark.
