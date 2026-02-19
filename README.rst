@@ -29,8 +29,8 @@ Create a virtual environment, and install the requirements:
 
 .. code-block::
 
-   $ python3 -m venv benchopt-clf
-   $ source benchopt-clf/bin/activate
+   $ python3 -m venv venv
+   $ source venv/bin/activate
    $ python -m pip install --upgrade pip
    $ python -m pip install -r requirements.txt
 
